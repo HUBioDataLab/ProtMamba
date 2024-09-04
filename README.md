@@ -1,6 +1,6 @@
 Repository for ProtMamba model
 
-_main.py_ contains the main script to train and test the model. Can be run with the arguments below:
+train_with_huggingface.py contains the main script to train and test the model. Can be run with the arguments below:
 
     --epochs EPOCHS
   
