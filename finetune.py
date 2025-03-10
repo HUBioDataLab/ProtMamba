@@ -50,8 +50,7 @@ def train():
     run = wandb.init(
         project = args.wandb_project_name,
         mode =  'online',
-        name = args.wandb_run_name,
-        config = run_config
+        name = args.wandb_run_name
     )  
     training_args = TrainingArguments(
         gradient_accumulation_steps=1,
@@ -89,7 +88,7 @@ def train():
         model=model,
         args=training_args,
         train_dataset=datasets['train'],
-        eval_dataset=datasets['train'],
+        eval_dataset=datasets['valid'],
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics,
