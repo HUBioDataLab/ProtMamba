@@ -1,16 +1,13 @@
 import torch
-from torch.utils.data import random_split
 
-from transformers import MambaForCausalLM, MambaConfig
+from transformers import MambaForCausalLM
 from transformers import Trainer, TrainingArguments
 from transformers import AutoTokenizer, DataCollatorForLanguageModeling
 
-import os
 import argparse
-import math
 import wandb
 
-from dataset import UniRefDataset
+from datasets import load_dataset
 from eval_metrics import compute_metrics
 from utils import set_seed, LogTrainingMetricsCallback
 
@@ -88,7 +85,7 @@ def train():
         model=model,
         args=training_args,
         train_dataset=datasets['train'],
-        eval_dataset=datasets['valid'],
+        eval_dataset=datasets['train'],
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics,

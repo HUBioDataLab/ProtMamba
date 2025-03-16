@@ -1,6 +1,9 @@
 from transformers import MambaForCausalLM, AutoTokenizer
 import sys
 from datasets import load_dataset
+import argparse
+import torch
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--device_index", type = int, help = "index of the cuda device", default = 0)
@@ -21,10 +24,10 @@ args = parser.parse_args()
 
 
 def create_gen_file(
+                   save_file_path : str,
                    num_seq : int = 1000,
                    max_length : int = 512,
-                   min_length : int = 200,
-                   save_file_path : str):
+                   min_length : int = 200):
     partitions = [0.1 * i for i in range(1, 10)]
     device = torch.device(f"cuda:{args.device_index}" if torch.cuda.is_available() else "cpu")
 
@@ -43,7 +46,7 @@ def create_gen_file(
             input_seq = test_dataset[i]
             seq_len = len(input_seq['sequence'])
             input_list = [input_seq['sequence'][:int(seq_len * i)] for i in partitions]
-            encoded_input_list = tokenizer(input_list, padding = "max_length", max_length = max_len, truncation = True, return_tensors = 'pt').to(device)
+            encoded_input_list = tokenizer(input_list, padding = "max_length", max_length = max_length, truncation = True, return_tensors = 'pt').to(device)
             input_ids = encoded_input_list['input_ids']
             gen_seq = model.generate(input_ids, 
                     max_length = max_length,

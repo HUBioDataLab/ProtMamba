@@ -10,7 +10,7 @@ def compute_metrics(eval_pred: EvalPrediction):
     preds = np.argmax(logits, axis=-1)
 
     # Create a mask for valid tokens
-    valid_mask = (labels != -100) & (labels != tokenizer.pad_token_id)
+    valid_mask = (labels != -100) & (labels != 0)
 
     # Apply mask to labels, logits, and predictions
     labels = labels[valid_mask]

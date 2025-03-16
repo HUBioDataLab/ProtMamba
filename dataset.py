@@ -1,7 +1,8 @@
 from Bio import SeqIO
 from datasets import Dataset
+import torch
 class UniRefDataset(Dataset):
-    def __init__(self, dataset_path: str, tokenizer, device: torch.device, max_len: int, num_data: int = int(60e6)) -> None:
+    def __init__(self, dataset_path: str, tokenizer, device: torch.device, max_len: int, num_data: int = int(1e5)) -> None:
         self.device = device
         self.tokenizer = tokenizer
         self.max_len = max_len
