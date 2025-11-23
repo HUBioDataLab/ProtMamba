@@ -14,22 +14,22 @@ from dataset import UniRefDataset
 from eval_metrics import compute_metrics
 from utils import set_seed, LogTrainingMetricsCallback
 
-os.environ["WANDB_DISABLE_CODE"] = "true"
+os.environ["WANDB_DISABLE_CODE"] = "true" #WEIGHTS AND BIASES
 set_seed(42)
-
+#IMPORTANT PART
 parser = argparse.ArgumentParser()
 parser.add_argument("--epochs", type = int, help = "number of epochs to train the model", default = 25) 
 parser.add_argument("--batch_size", type = int, help = "batch size per device for both training and evaluation", default = 128) 
-parser.add_argument("--nhl", type = int, help = "number of hidden layers in the model",  default = 32) 
-parser.add_argument("--state_size" , type = int, help = "the size of the state space latents used in the model", default = 16) 
-parser.add_argument("--hidden_size" , type = int, help = "dimensionality of the embeddings and hidden states", default = 768) 
-parser.add_argument("--max_length" , type = int, help = "context size, or length of each input sequence to the model", default = 512)
+parser.add_argument("--nhl", type = int, help = "number of hidden layers in the model",  default = 32) #IMPORTANT
+parser.add_argument("--state_size" , type = int, help = "the size of the state space latents used in the model", default = 16) #IMPORTANT
+parser.add_argument("--hidden_size" , type = int, help = "dimensionality of the embeddings and hidden states", default = 768) #IMPORTANT
+parser.add_argument("--max_length" , type = int, help = "context size, or length of each input sequence to the model", default = 512) #IMPORTANT
 parser.add_argument("--lr", type = float, help = "maximum value of learning rate to be used during training", default = 1e-3) 
 parser.add_argument("--warmup_ratio", type = float, help =  "ratio of the learning rate warm up phase to the entire trining", default = 0.0001)
 parser.add_argument("--weight_decay", type = float, help = "l2 regularization constant", default = 0.001)
 parser.add_argument("--max_grad_norm", type = float, help = "maximum gradient norm threshold for norm clipping", default = 1.0)
 parser.add_argument("--device_index", type = int, help = "index of the cuda device", default = 0)
-parser.add_argument("--tokenizer_path", type = str, help = "path to the pretrained tokenizer, either huggingface hub directory or local directory")
+parser.add_argument("--tokenizer_path", type = str, help = "path to the pretrained tokenizer, either huggingface hub directory or local directory") #IMPORTANT
 parser.add_argument("--model_save_path", type = str, help = "directory to save the model weights and optimizer state")
 parser.add_argument("--dataset_path", type = str, help = "path to the dataset in the fasta file format")
 parser.add_argument("--model_load_path", type = str, help = "the path to the model state dict if not training from zero" )
@@ -42,7 +42,7 @@ parser.add_argument("--num_data", type = int, help = "total number of protein se
 args = parser.parse_args()
 
 device = torch.device(f'cuda:{args.device_index}' if torch.cuda.is_available() else 'cpu')
-tokenizer = AutoTokenizer.from_pretrained("facebook/esm2_t6_8M_UR50D", padding_side = 'left')
+tokenizer = AutoTokenizer.from_pretrained("facebook/esm2_t6_8M_UR50D", padding_side = 'left') #PADDING SIDE????????
 
 def train():
     run_config = {
@@ -118,7 +118,7 @@ def train():
         LogTrainingMetricsCallback(run)
     ]
 
-    trainer = Trainer(
+    trainer = Trainer( #IMPORTANT
         model=model,
         args=training_args,
         train_dataset=train_dataset,
